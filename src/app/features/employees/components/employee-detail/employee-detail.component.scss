@@ -1,0 +1,10 @@
+.detail-container { padding: 24px; max-width: 800px; margin: 0 auto; }
+.detail-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; h1 { margin: 0; font-size: 1.5rem; } }
+.spacer { flex: 1; }
+.profile-header { display: flex; align-items: center; gap: 20px; padding: 16px 0; }
+.avatar { width: 72px; height: 72px; border-radius: 50%; background: #e3e7fb; display: flex; align-items: center; justify-content: center; mat-icon { font-size: 40px; height: 40px; width: 40px; color: #3f51b5; } }
+h2 { margin: 0 0 4px; }
+.subtitle { color: #666; margin: 0 0 8px; }
+.divider { margin: 20px 0; }
+.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+.detail-item { display: flex; gap: 12px; align-items: flex-start; mat-icon { color: #999; margin-top: 2px; } label { font-size: 0.75rem; color: #999; display: block; } p { margin: 0; font-size: 0.95rem; } }

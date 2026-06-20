@@ -1,0 +1,84 @@
+<div class="detail-container">
+  <div class="detail-header">
+    <button mat-icon-button (click)="onBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>Employee Details</h1>
+    <span class="spacer"></span>
+    @if (store.selectedEmployee()) {
+      <button mat-flat-button color="primary" (click)="onEdit()">
+        <mat-icon>edit</mat-icon> Edit
+      </button>
+    }
+  </div>
+
+  @if (store.isLoading()) {
+    <app-loading-spinner />
+  }
+
+  @if (!store.isLoading() && store.selectedEmployee(); as emp) {
+    <mat-card>
+      <mat-card-content>
+        <div class="profile-header">
+          <div class="avatar">
+            <mat-icon>person</mat-icon>
+          </div>
+          <div>
+            <h2>{{ emp.fullName }}</h2>
+            <p class="subtitle">{{ emp.jobTitle ?? 'No title' }} &bull; {{ emp.departmentName }}</p>
+            <mat-chip [color]="emp.employmentStatus === 'Active' ? 'primary' : 'warn'" highlighted>
+              {{ emp.employmentStatus }}
+            </mat-chip>
+          </div>
+        </div>
+
+        <mat-divider class="divider" />
+
+        <div class="detail-grid">
+          <div class="detail-item">
+            <mat-icon>email</mat-icon>
+            <div>
+              <label>Email</label>
+              <p>{{ emp.email }}</p>
+            </div>
+          </div>
+          <div class="detail-item">
+            <mat-icon>phone</mat-icon>
+            <div>
+              <label>Phone</label>
+              <p>{{ emp.phoneNumber ?? '—' }}</p>
+            </div>
+          </div>
+          <div class="detail-item">
+            <mat-icon>cake</mat-icon>
+            <div>
+              <label>Date of Birth</label>
+              <p>{{ emp.dateOfBirth ?? '—' }}</p>
+            </div>
+          </div>
+          <div class="detail-item">
+            <mat-icon>wc</mat-icon>
+            <div>
+              <label>Gender</label>
+              <p>{{ emp.gender }}</p>
+            </div>
+          </div>
+          <div class="detail-item">
+            <mat-icon>event</mat-icon>
+            <div>
+              <label>Hire Date</label>
+              <p>{{ emp.hireDate }}</p>
+            </div>
+          </div>
+          <div class="detail-item">
+            <mat-icon>attach_money</mat-icon>
+            <div>
+              <label>Salary</label>
+              <p>{{ emp.salary ? ('$' + emp.salary) : '—' }}</p>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

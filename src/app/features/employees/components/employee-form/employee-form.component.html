@@ -1,0 +1,124 @@
+<div class="form-container">
+  <div class="form-header">
+    <button mat-icon-button (click)="onCancel()" matTooltip="Back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>{{ isEditMode() ? 'Edit Employee' : 'New Employee' }}</h1>
+  </div>
+
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+
+        <!-- Personal Info section -->
+        <h3 class="section-title">Personal Information</h3>
+        <div class="form-grid">
+
+          <mat-form-field appearance="outline">
+            <mat-label>First Name *</mat-label>
+            <input matInput formControlName="firstName" />
+            @if (getError('firstName')) {
+              <mat-error>{{ getError('firstName') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Last Name *</mat-label>
+            <input matInput formControlName="lastName" />
+            @if (getError('lastName')) {
+              <mat-error>{{ getError('lastName') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Email *</mat-label>
+            <input matInput formControlName="email" type="email" />
+            @if (getError('email')) {
+              <mat-error>{{ getError('email') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Phone Number</mat-label>
+            <input matInput formControlName="phoneNumber" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput [matDatepicker]="dobPicker" formControlName="dateOfBirth" />
+            <mat-datepicker-toggle matSuffix [for]="dobPicker" />
+            <mat-datepicker #dobPicker />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Gender</mat-label>
+            <mat-select formControlName="gender">
+              @for (opt of genderOptions; track opt.value) {
+                <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <mat-divider class="section-divider" />
+
+        <!-- Employment Info section -->
+        <h3 class="section-title">Employment Information</h3>
+        <div class="form-grid">
+
+          <mat-form-field appearance="outline">
+            <mat-label>Job Title</mat-label>
+            <input matInput formControlName="jobTitle" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Department *</mat-label>
+            <mat-select formControlName="departmentId">
+              @for (dept of store.departments(); track dept.id) {
+                <mat-option [value]="dept.id">{{ dept.name }}</mat-option>
+              }
+            </mat-select>
+            @if (getError('departmentId')) {
+              <mat-error>{{ getError('departmentId') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Hire Date *</mat-label>
+            <input matInput [matDatepicker]="hirePicker" formControlName="hireDate" />
+            <mat-datepicker-toggle matSuffix [for]="hirePicker" />
+            <mat-datepicker #hirePicker />
+            @if (getError('hireDate')) {
+              <mat-error>{{ getError('hireDate') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Salary</mat-label>
+            <input matInput type="number" formControlName="salary" />
+            <span matPrefix>$&nbsp;</span>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Employment Status</mat-label>
+            <mat-select formControlName="employmentStatus">
+              @for (opt of statusOptions; track opt.value) {
+                <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Form actions -->
+        <div class="form-actions">
+          <button mat-stroked-button type="button" (click)="onCancel()">Cancel</button>
+          <button mat-flat-button color="primary" type="submit" [disabled]="isSaving()">
+            <mat-icon>save</mat-icon>
+            {{ isSaving() ? 'Saving...' : (isEditMode() ? 'Update Employee' : 'Create Employee') }}
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

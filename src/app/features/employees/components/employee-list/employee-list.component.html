@@ -1,0 +1,118 @@
+<div class="list-container">
+  <!-- Header bar -->
+  <div class="list-header">
+    <h1 class="page-title">Employees</h1>
+    <button mat-flat-button color="primary" (click)="onCreateNew()">
+      <mat-icon>add</mat-icon>
+      New Employee
+    </button>
+  </div>
+
+  <!-- Search bar -->
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Search employees</mat-label>
+    <input matInput [(ngModel)]="searchValue"
+           (keyup.enter)="onSearch()"
+           placeholder="Name, email or job title..." />
+    @if (searchValue) {
+      <button matSuffix mat-icon-button (click)="onSearchClear()" aria-label="Clear">
+        <mat-icon>close</mat-icon>
+      </button>
+    } @else {
+      <mat-icon matSuffix>search</mat-icon>
+    }
+  </mat-form-field>
+
+  <!-- Loading spinner -->
+  @if (store.isLoading()) {
+    <app-loading-spinner />
+  }
+
+  <!-- Table -->
+  @if (!store.isLoading()) {
+    <div class="table-wrapper mat-elevation-z2">
+      <table mat-table [dataSource]="store.employees()">
+
+        <!-- Full Name -->
+        <ng-container matColumnDef="fullName">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let emp">
+            <strong>{{ emp.fullName }}</strong>
+          </td>
+        </ng-container>
+
+        <!-- Email -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let emp">{{ emp.email }}</td>
+        </ng-container>
+
+        <!-- Job Title -->
+        <ng-container matColumnDef="jobTitle">
+          <th mat-header-cell *matHeaderCellDef>Job Title</th>
+          <td mat-cell *matCellDef="let emp">{{ emp.jobTitle ?? '—' }}</td>
+        </ng-container>
+
+        <!-- Department -->
+        <ng-container matColumnDef="departmentName">
+          <th mat-header-cell *matHeaderCellDef>Department</th>
+          <td mat-cell *matCellDef="let emp">{{ emp.departmentName ?? '—' }}</td>
+        </ng-container>
+
+        <!-- Status chip -->
+        <ng-container matColumnDef="employmentStatus">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let emp">
+            <mat-chip [color]="getStatusColor(emp.employmentStatus)" highlighted>
+              {{ emp.employmentStatus }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Hire Date -->
+        <ng-container matColumnDef="hireDate">
+          <th mat-header-cell *matHeaderCellDef>Hire Date</th>
+          <td mat-cell *matCellDef="let emp">{{ emp.hireDate }}</td>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let emp" class="actions-cell">
+            <button mat-icon-button color="primary" (click)="onView(emp)"
+                    matTooltip="View details">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button color="accent" (click)="onEdit(emp)"
+                    matTooltip="Edit">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="onDelete(emp)"
+                    matTooltip="Delete">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <!-- Empty state -->
+        <tr class="mat-row" *matNoDataRow>
+          <td [colSpan]="displayedColumns.length" class="no-data">
+            <mat-icon>people_outline</mat-icon>
+            <p>No employees found</p>
+          </td>
+        </tr>
+      </table>
+
+      <mat-paginator
+        [length]="store.totalCount()"
+        [pageSize]="store.pageSize()"
+        [pageIndex]="store.pageNumber() - 1"
+        [pageSizeOptions]="[5, 10, 25, 50]"
+        (page)="onPageChange($event)"
+        showFirstLastButtons />
+    </div>
+  }
+</div>

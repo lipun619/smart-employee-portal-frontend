@@ -1,0 +1,13 @@
+.sidenav-container {
+  height: calc(100vh - 64px); // subtract header height
+}
+
+.sidenav {
+  width: 220px;
+}
+
+.main-content {
+  overflow-y: auto;
+  background: #f5f5f5;
+  min-height: 100%;
+}

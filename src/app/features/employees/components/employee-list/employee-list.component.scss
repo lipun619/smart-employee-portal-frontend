@@ -1,0 +1,56 @@
+.list-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  .page-title {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #333;
+  }
+}
+
+.search-field {
+  width: 100%;
+  max-width: 480px;
+  margin-bottom: 16px;
+}
+
+.table-wrapper {
+  border-radius: 8px;
+  overflow: hidden;
+
+  table {
+    width: 100%;
+  }
+}
+
+.actions-cell {
+  white-space: nowrap;
+}
+
+.no-data {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+
+  mat-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+    opacity: 0.4;
+  }
+
+  p {
+    margin-top: 8px;
+    font-size: 1rem;
+  }
+}

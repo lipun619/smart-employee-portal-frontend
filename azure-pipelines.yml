@@ -1,0 +1,69 @@
+# ============================================================
+# Frontend CI/CD Pipeline — Smart Employee Portal Angular 20
+# ============================================================
+# Triggers on every push to main branch (angular folder changes only)
+# Steps: npm ci → ng build → deploy to Azure Static Web App
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - smart-employee-portal/**
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  nodeVersion: '22.x'
+  angularProject: 'smart-employee-portal'
+
+stages:
+
+  # ── Stage 1: Build Angular ───────────────────────────────────────────────
+  - stage: Build
+    displayName: 'Build Angular App'
+    jobs:
+      - job: BuildAngular
+        displayName: 'npm ci + ng build'
+        steps:
+
+          - task: NodeTool@0
+            displayName: 'Install Node.js $(nodeVersion)'
+            inputs:
+              versionSpec: $(nodeVersion)
+
+          - script: npm ci
+            displayName: 'Install dependencies (ci = reproducible install)'
+            workingDirectory: $(angularProject)
+
+          - script: npx ng build --configuration production
+            displayName: 'Build Angular (production)'
+            workingDirectory: $(angularProject)
+
+          - task: PublishBuildArtifacts@1
+            displayName: 'Upload Angular artifact'
+            inputs:
+              pathToPublish: '$(angularProject)/dist/smart-employee-portal/browser'
+              artifactName: 'SmartEmployeePortal-Angular'
+
+  # ── Stage 2: Deploy to Azure Static Web App ──────────────────────────────
+  - stage: Deploy
+    displayName: 'Deploy to Azure Static Web App'
+    dependsOn: Build
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - deployment: DeployAngular
+        displayName: 'Deploy Angular to swa-sep-dev'
+        environment: 'Development'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureStaticWebApp@0
+                  displayName: 'Deploy to Static Web App'
+                  inputs:
+                    app_location: '$(angularProject)'
+                    output_location: 'dist/smart-employee-portal/browser'
+                    azure_static_web_apps_api_token: '$(SWA_DEPLOYMENT_TOKEN)'

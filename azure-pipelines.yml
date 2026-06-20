@@ -59,13 +59,7 @@ stages:
   - stage: Deploy
     displayName: 'Deploy to Azure Static Web App'
     dependsOn: Build
-    condition: and(
-      succeeded(),
-      or(
-        eq(variables['Build.SourceBranch'], 'refs/heads/main'),
-        eq(variables['Build.SourceBranch'], 'refs/heads/master')
-      )
-    )
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
     jobs:
       - deployment: DeployAngular
         displayName: 'Deploy Angular to swa-sep-dev'

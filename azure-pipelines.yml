@@ -71,6 +71,7 @@ stages:
                 - task: AzureStaticWebApp@0
                   displayName: 'Deploy to Static Web App'
                   inputs:
-                    app_location: '/'
-                    output_location: 'dist/smart-employee-portal/browser'
+                    app_location: 'dist/smart-employee-portal/browser'
+                    output_location: ''
+                    skip_app_build: true
                     azure_static_web_apps_api_token: '$(SWA_DEPLOYMENT_TOKEN)'

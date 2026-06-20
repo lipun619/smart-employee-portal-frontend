@@ -41,7 +41,7 @@ stages:
 
           - script: |
               npm cache clean --force
-              npm install --registry=https://registry.npmjs.org/
+              npm install --no-package-lock --registry=https://registry.npmjs.org/
             displayName: 'Install dependencies from npmjs registry'
             workingDirectory: $(angularProject)
 

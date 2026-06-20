@@ -39,8 +39,10 @@ stages:
             inputs:
               versionSpec: $(nodeVersion)
 
-          - script: npm ci
-            displayName: 'Install dependencies (ci = reproducible install)'
+          - script: |
+              npm cache clean --force
+              npm install --registry=https://registry.npmjs.org/
+            displayName: 'Install dependencies from npmjs registry'
             workingDirectory: $(angularProject)
 
           - script: npx ng build --configuration production

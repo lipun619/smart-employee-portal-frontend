@@ -74,12 +74,12 @@ stages:
                     buildType: 'current'
                     downloadType: 'single'
                     artifactName: 'SmartEmployeePortal-Angular'
-                    downloadPath: '$(Pipeline.Workspace)'
+                    downloadPath: '$(System.DefaultWorkingDirectory)'
 
                 - task: AzureStaticWebApp@0
                   displayName: 'Deploy to Static Web App'
                   inputs:
-                    app_location: '$(Pipeline.Workspace)/SmartEmployeePortal-Angular'
+                    app_location: 'SmartEmployeePortal-Angular'
                     output_location: ''
                     skip_app_build: true
                     azure_static_web_apps_api_token: '$(SWA_DEPLOYMENT_TOKEN)'
